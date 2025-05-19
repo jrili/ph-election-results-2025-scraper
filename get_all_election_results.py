@@ -8,7 +8,7 @@ from src import config
 
 available_top_levels = ['local', 'overseas']
 
-def get_region_json(top_level, code=0, ):
+def get_region_json(top_level, code=0):
     """ Get the JSON response for the top level and categories 2 to 5 regions
 
     Keyword Arugments:
