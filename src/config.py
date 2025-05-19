@@ -1,4 +1,4 @@
-LOG_CONTEXT = 'ph_er_2025_scraper'
+LOG_CONTEXT = 'er_scraper'
 PATH_TO_LOGFILE = 'log/run.log'
 
 BASE_URL = 'https://2025electionresults.comelec.gov.ph/data/regions/'
