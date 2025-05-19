@@ -3,9 +3,24 @@ Scraper for PH Election Results 2025
 
 [Work-in-progress]
 
-# Navigating the Available Regions and their URIs
+# Navigating the Available Regions, Election Results, and their URIs
 
-## Top-level: Category Code 0
+Overview:
+```
+Category Code 0 (Top-level)
+|-> Category Code 2
+      (Regions / Overseas Voter Types)
+      |-> Category Code 3
+            (Provinces / Global Regions)
+            |-> Category Code 4
+               (Municipalities / Countries)
+               |-> Category Code 5
+                     (Baranggays / Jurisdictions)
+                     |-> Category Code null
+                           (Precinct-level Election Results)
+```
+
+## Category Code 0: Top-level
 
 Returns a JSON object of regions within.
 
@@ -164,18 +179,22 @@ URL: [https://2025electionresults.comelec.gov.ph/data/regions/overseas/0.json](h
 ```
 </details>
 
-## Regional-level: Category Code 2
-Returns a JSON object of provinces within the region with specified `code`.
+## Category Code 2: Regions / Overseas Voter Types
+**Local top-level**: Returns a JSON object of provinces within the region with specified `code`.
 
-URL: https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
+**Overseas top-level**: Returns a JSON object of global regions belonging to the overseas voter type with specified `code`. As of writing, only the Overseas Absentee Voters (OAV) type is available.
+
+### URL Structure:
+https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
 
 * _<`top-level-region`>_: e.g. `local` or `overseas`
-* _<`code`>_: from the JSON object obtained from the top-level response, e.g. `R04A000`
+* _<`code`>_: from the JSON object obtained from the category code 0 response, e.g. `R04A000`
 
-Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/R04A000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/R04A000.json)
+### Local Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/local/R04A000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/R04A000.json)
 
 <details>
-<summary>Sample Results (click to expand)</summary>
+<summary>Sample Local Results (click to expand)</summary>
 
 ```
 {
@@ -215,14 +234,57 @@ Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/R04A000.
 ```
 </details>
 
-## Provincial-level: Category Code 3
-Returns a JSON object of municipalities within the province with specified `code`.
-URL: https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
+### Overseas Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/overseas/R0OAV00.json](https://2025electionresults.comelec.gov.ph/data/regions/overseas/R0OAV00.json)
+
+<details>
+<summary>Sample Overseas Results (click to expand)</summary>
+
+```
+{
+   "regions":[
+      {
+         "categoryCode":"3",
+         "masterCode":"R0OAV00",
+         "code":"9000000",
+         "name":"ASIA PACIFIC"
+      },
+      {
+         "categoryCode":"3",
+         "masterCode":"R0OAV00",
+         "code":"9100000",
+         "name":"NORTH AND LATIN AMERICAS"
+      },
+      {
+         "categoryCode":"3",
+         "masterCode":"R0OAV00",
+         "code":"9200000",
+         "name":"MIDDLE EAST AND AFRICAS"
+      },
+      {
+         "categoryCode":"3",
+         "masterCode":"R0OAV00",
+         "code":"9300000",
+         "name":"EUROPE"
+      }
+   ]
+}
+```
+</details>
+
+## Category Code 3: Provinces / Global Regions
+**Local**: Returns a JSON object of municipalities within the province with specified `code`.
+
+**Global**: Returns a JSON object of countries within the global region with specified `code`.
+
+### URL:
+https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
 
 * _<`top-level-region`>_: e.g. `local` or `overseas`
-* _<`code`>_: from the JSON object obtained from the regional-level response, e.g. `3400000`
+* _<`code`>_: from the JSON object obtained from the category code 2 response, e.g. `3400000`
 
-Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/3400000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/3400000.json)
+### Local Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/local/3400000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/3400000.json)
 
 <details>
 <summary>Sample Results (click to expand)</summary>
@@ -415,14 +477,153 @@ Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/3400000.
 ```
 </details>
 
-## Municipality-level: Category Code 4
-Returns a JSON object of baranggays within the municipality with specified `code`.
-URL: https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
+### Overseas Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/overseas/9300000.json](https://2025electionresults.comelec.gov.ph/data/regions/overseas/9300000.json)
+
+<details>
+<summary>Sample Results (click to expand)</summary>
+
+```
+{
+   "regions":[
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9301000",
+         "name":"TÜRKIYE"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9302000",
+         "name":"GREECE"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9303000",
+         "name":"GERMANY"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9304000",
+         "name":"SWITZERLAND"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9305000",
+         "name":"BELGUIM"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9306000",
+         "name":"HUNGARY"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9307000",
+         "name":"DENMARK"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9308000",
+         "name":"PORTUGAL"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9309000",
+         "name":"UNITED KINGDOM OF GREAT BRITAIN"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9310000",
+         "name":"SPAIN"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9311000",
+         "name":"RUSSIA"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9312000",
+         "name":"NORWAY"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9313000",
+         "name":"FRANCE"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9314000",
+         "name":"CZECH REPUBLIC"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9315000",
+         "name":"ITALY"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9316000",
+         "name":"SWEDEN"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9317000",
+         "name":"THE NETHERLANDS"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9318000",
+         "name":"HOLY SEE"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9319000",
+         "name":"AUSTRIA"
+      },
+      {
+         "categoryCode":"4",
+         "masterCode":"9300000",
+         "code":"9320000",
+         "name":"POLAND"
+      }
+   ]
+}
+```
+</details>
+
+## Category Code 4: Municipalities / Countries
+**Local**: Returns a JSON object of baranggays within the municipality with specified `code`.
+
+**Overseas**: Returns a JSON object of jurisdictions within the country with specified `code`.
+
+### URL:
+https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_<`code`>_.json
 
 * _<`top-level-region`>_: e.g. `local` or `overseas`
-* _<`code`>_: from the JSON object obtained from the provincial-level response, e.g. `3403000`
+* _<`code`>_: from the JSON object obtained from the category code 3 response, e.g. `3403000`
 
-Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/3403000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/3403000.json)
+### Local Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/local/3403000.json](https://2025electionresults.comelec.gov.ph/data/regions/local/3403000.json)
 <details>
 <summary>Sample Results (click to expand)</summary>
 
@@ -578,14 +779,44 @@ Example: [https://2025electionresults.comelec.gov.ph/data/regions/local/3403000.
 ```
 </details>
 
-## Baranggay-level: Category Code 5
-Returns a JSON object of the precincts within the baranggay with specified `code`.
-URL: https://2025electionresults.comelec.gov.ph/data/regions/precinct/_<`first_2_characters_of_code`>_/_<`code`>_.json
+### Overseas Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/overseas/9315000.json](https://2025electionresults.comelec.gov.ph/data/regions/overseas/9315000.json)
+<details>
+<summary>Sample Results (click to expand)</summary>
 
+```
+{
+   "regions":[
+      {
+         "categoryCode":"5",
+         "masterCode":"9315000",
+         "code":"9315001",
+         "name":"ROME PE"
+      },
+      {
+         "categoryCode":"5",
+         "masterCode":"9315000",
+         "code":"9315005",
+         "name":"MILAN PCG"
+      }
+   ]
+}
+```
+</details>
+
+## Category Code 5: Baranggays / Jurisdictions
+**Local**: Returns a JSON object of the precincts within the baranggay with specified `code`.
+
+**Overseas**: Returns a JSON object of the precincts within the jurisdiction with specified `code`.
+
+### URL:
+https://2025electionresults.comelec.gov.ph/data/regions/precinct/_<`first_2_characters_of_code`>_/_<`code`>_.json
+
+* _<`code`>_: from the JSON object obtained from the cetgory 4 response, e.g. `3403008`
 * _<`first_2_characters_of_code`>_: e.g. `34`
-* _<`code`>_: from the JSON object obtained from the municipality-level response, e.g. `3403008`
 
-Example: [https://2025electionresults.comelec.gov.ph/data/regions/precinct/34/3403008.json](https://2025electionresults.comelec.gov.ph/data/regions/precinct/34/3403008.json)
+### Local Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/precinct/34/3403008.json](https://2025electionresults.comelec.gov.ph/data/regions/precinct/34/3403008.json)
 <details>
 <summary>Sample Results (click to expand)</summary>
 
@@ -717,14 +948,34 @@ Example: [https://2025electionresults.comelec.gov.ph/data/regions/precinct/34/34
 ```
 </details>
 
-## Precinct-level Election Results: Category Code null
-URL: https://2025electionresults.comelec.gov.ph/data/er/_<`first_3_characters_of_code`>_/_<`code`>_.json
+### Overseas Example:
+[https://2025electionresults.comelec.gov.ph/data/regions/precinct/93/9315005.json](https://2025electionresults.comelec.gov.ph/data/regions/precinct/93/9315005.json)
+<details>
+<summary>Sample Results (click to expand)</summary>
 
+```
+{
+   "regions":[
+      {
+         "categoryCode":null,
+         "masterCode":null,
+         "code":"93150005",
+         "name":"93150005"
+      }
+   ]
+}
+```
+</details>
+
+## Category Code null: Precinct-level Election Results
+### URL:
+https://2025electionresults.comelec.gov.ph/data/er/_<`first_3_characters_of_code`>_/_<`code`>_.json
+
+* _<`code`>_: from the JSON object obtained from the category code 5 response, e.g. `34030158`
 * _<`first_3_characters_of_code`>_: e.g. `340`
-* _<`code`>_: from the JSON object obtained from the municipality-level response, e.g. `34030158`
 
-
-Example: [https://2025electionresults.comelec.gov.ph/data/er/340/34030158.json](https://2025electionresults.comelec.gov.ph/data/er/340/34030158.json)
+### Example:
+[https://2025electionresults.comelec.gov.ph/data/er/340/34030158.json](https://2025electionresults.comelec.gov.ph/data/er/340/34030158.json)
 <details>
 <summary>Sample Results (click to expand)</summary>
 
