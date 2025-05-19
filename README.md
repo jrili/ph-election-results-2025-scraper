@@ -812,7 +812,7 @@ https://2025electionresults.comelec.gov.ph/data/regions/_<`top-level-region`>_/_
 ### URL:
 https://2025electionresults.comelec.gov.ph/data/regions/precinct/_<`first_2_characters_of_code`>_/_<`code`>_.json
 
-* _<`code`>_: from the JSON object obtained from the cetgory 4 response, e.g. `3403008`
+* _<`code`>_: from the JSON object obtained from the category 4 response, e.g. `3403008`
 * _<`first_2_characters_of_code`>_: e.g. `34`
 
 ### Local Example:
