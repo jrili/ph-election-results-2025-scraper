@@ -1,2 +1,6 @@
 log/*.log
 src/__pycache__/*
+
+output/local
+output/overseas
+output/*.json
