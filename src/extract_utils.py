@@ -37,7 +37,7 @@ def get_json(url):
         sleep(config.REQUEST_SLEEP_S)
         return response_json
 
-    except JSONDecodeError as e:
+    except (JSONDecodeError, requests.exceptions.ConnectionError) as e:
         logging_utils.logger.error(f"Error getting JSON from '{url}': {e}")
         sleep(config.REQUEST_SLEEP_S)
         return None
