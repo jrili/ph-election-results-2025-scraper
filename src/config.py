@@ -7,4 +7,4 @@ BASE_ER_URL = BASE_URL + 'er/'
 
 OUTPUT_PATH = 'output'
 
-REQUEST_SLEEP_S = 0.5
+REQUEST_SLEEP_S = 0.1

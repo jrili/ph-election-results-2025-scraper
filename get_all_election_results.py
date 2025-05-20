@@ -1,9 +1,10 @@
 import requests
 from urllib.parse import urljoin
-from time import sleep
+from time import time, sleep
 from json.decoder import JSONDecodeError
 import os
 import json
+from math import trunc
 
 from src import logging_utils
 from src import config
@@ -41,14 +42,16 @@ def get_json(url):
         return None
 
 def get_region_er_json(top_level, src_category_code, code=0):
-    """ Get the JSON response for the top level and categories 2 to 5 regions
+    """ Get the JSON data for regional data (category codes 0 to 5) or election results data (category code null/None)
 
     Keyword Arugments:
     top_level -- string; `local` or `overseas`
+    src_category_code -- category code from which `code` was taken from
     code -- string; `code`.json to fetch
 
     Return:
-    JSON response object
+    JSON response object,
+    None if call to URL is unsuccessful
     """
     logging_utils.logger.debug(f"In get_region_json(): Started w/ top_level={top_level}, category_code={src_category_code}, code={code}")
 
@@ -114,10 +117,12 @@ def get_output_path(parents:list, filename=None):
 
     return output_path
 
-logging_utils.init_logger()
-logging_utils.logger.info("PH Election Results 2025 Scraper: Started.")
-
 if __name__ == "__main__":
+
+    start_time = time()
+    logging_utils.init_logger()
+    logging_utils.logger.info("PH Election Results 2025 Scraper: Started.")
+
     # TOP-LEVEL: local, overseas
     for top_level_num, top_level in enumerate(available_top_levels):
         logging_utils.logger.debug(f"({top_level_num+1}/{len(available_top_levels)}) Getting data for top level: '{top_level}'")
@@ -203,12 +208,12 @@ if __name__ == "__main__":
                         # CATEGORY NULL: Precincts
                         for precinct_json in precinct_jsons['regions']:
                             logging_utils.logger.info(f" Getting election results from "\
-                                                    f"top level: '{top_level}', "\
-                                                    f"cat2 code: '{cat2_json['code']}'({cat2_json['name']}), "\
-                                                    f"cat3 code: '{cat3_json['code']}'({cat3_json['name']}), "\
-                                                    f"cat4 code: '{cat4_json['code']}'({cat4_json['name']}), "\
-                                                    f"cat5 code: '{cat5_json['code']}'({cat5_json['name']}), "\
-                                                    f"precinct code: '{precinct_json['code']}'")
+                                                    f"'{top_level}'| "\
+                                                    f"'{cat2_json['code']}'({cat2_json['name']})| "\
+                                                    f"'{cat3_json['code']}'({cat3_json['name']})| "\
+                                                    f"'{cat4_json['code']}'({cat4_json['name']})| "\
+                                                    f"'{cat5_json['code']}'({cat5_json['name']})| "\
+                                                    f"'{precinct_json['code']}'")
 
                             er_jsons = get_region_er_json(top_level, src_category_code=None, code=precinct_json['code'])
 
@@ -227,4 +232,5 @@ if __name__ == "__main__":
                                                     ],
                                                     f"{precinct_json['code']}.json"))
 
-    logging_utils.logger.info("PH Election Results 2025 Scraper: Ended.")
+    elapsed_time = time() - start_time
+    logging_utils.logger.info(f"PH Election Results 2025 Scraper: Ended in {trunc(elapsed_time//(60*60))}h {trunc(elapsed_time//(60))}m {trunc(elapsed_time % 60)}s")
