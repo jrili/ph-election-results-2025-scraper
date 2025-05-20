@@ -19,19 +19,14 @@ This project demonstrates a web scraping tool that extracts election results dat
 
 # Navigating the Available Regions, Election Results, and their URIs
 
-Overview:
+**Overview**:
 ```
 Category Code 0 (Top-level)
-|-> Category Code 2
-      (Regions / Overseas Voter Types)
-      |-> Category Code 3
-            (Provinces / Global Regions)
-            |-> Category Code 4
-               (Municipalities / Countries)
-               |-> Category Code 5
-                     (Baranggays / Jurisdictions)
-                     |-> Category Code null
-                           (Precinct-level Election Results)
+|-> Category Code 2 (Regions / Overseas Voter Types)
+      |-> Category Code 3 (Provinces / Global Regions)
+            |-> Category Code 4 (Municipalities / Countries)
+                  |-> Category Code 5 (Baranggays / Jurisdictions)
+                        |-> Category Code null (Precinct-level Election Results)
 ```
 
 ## Category Code 0: Top-level
