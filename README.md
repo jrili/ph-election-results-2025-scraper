@@ -1,7 +1,21 @@
 Scraper for PH Election Results 2025
------------------------------------
+======================================
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+[ETL]
 
-[Work-in-progress]
+***Part of a Data Engineer Portfolio: [jrili/data-engineer-portfolio](https://github.com/jrili/data-engineer-portfolio)***
+
+# Project Description
+This project demonstrates a web scraping tool that extracts election results data from the 2025 Philippine National Elections held on May 12, 2025. Scraped data can be used for further transformation and loading into other formats or databases.
+
+# Project Objectives
+* Scrape regional metadata and election results data from [COMELEC's website](https://2025electionresults.comelec.gov.ph/)
+* Store the scraped data as JSON files organized per region/category code as described in the `Navigating the Available Regions, Election Results, and their URIs` section.
+* Implement a logging mechanism to track the progress and stages of the scraping process
+
+# Tools & Technologies Used
+* Python 3.13
+* requests
 
 # Navigating the Available Regions, Election Results, and their URIs
 
@@ -2517,3 +2531,28 @@ https://2025electionresults.comelec.gov.ph/data/er/_<`first_3_characters_of_code
 }
 ```
 </details>
+
+# Workflow Oveview
+1. Scrape the top-level data to get and save the **Regional/Overseas Voter Type** data
+2. Using the `code`s from the Regional/Overseas Voter Type data, scrape and save the **Provincial/Global Regional** data
+3. Using the `code`s from the Provincial/Global Regional data, scrape and save the **Municipal/Country** data
+4. Using the `code`s from the Municipal/Country data, scrape and save the **Baranggay/Jurisdiction** data
+5. Using the `code`s from the Baranggay/Jurisdiction data, scrape and save the **Precinct** data
+6. Using the `code`s from the Precinct data, scrape and save the **Election Results** per precinct
+
+# How to execute script:
+
+_(Tested in Python 3.13)_
+```
+python banks_project.py
+```
+
+# Key Learning Points
+* Data organization in COMELEC's 2025 Election Results website
+* Usage of browser's Dev Tools to inspect website data sources and patterns
+* Fetching JSON data using the `requests` library
+* Storing JSON files organized according to the data hierarchy
+
+# Future Improvements
+* In a separate project, create a Postgres DB schema to store this data and load to DB
+* Further refactor main loop, especially repetitive blocks
