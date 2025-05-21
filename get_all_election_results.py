@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
                 if cat3_jsons == None:
                     logging_utils.logger.warning(f"Unable to get Category 3 JSON data from top_level: {top_level}, category 2 code: {cat2_json['code']}({cat2_json['name']}). Skipping.")
-                continue
+                    continue
 
                 # Write the category 2 json file containing category code 3 regions
                 write_json(cat3_jsons, path_to_output_file)
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
                     if cat4_jsons == None:
                         logging_utils.logger.warning(f"Unable to get Category 4 JSON data from top_level: {top_level}, category 2 code: {cat2_json['code']} ({cat2_json['name']}), category 3 code: {cat3_json['code']} ({cat3_json['name']}). Skipping.")
-                    continue
+                        continue
 
                     # Write the category 3 json file containing category code 4 regions
                     write_json(cat4_jsons, path_to_output_file)
@@ -155,4 +155,4 @@ if __name__ == "__main__":
                                 logging_utils.logger.info(f"\tFile already downloaded in '{path_to_output_file}'. Skipping.")
 
     elapsed_time = time() - start_time
-    logging_utils.logger.info(f"PH Election Results 2025 Scraper: Ended in {trunc(elapsed_time//(60*60))}h {trunc(elapsed_time//(60))}m {trunc(elapsed_time % 60)}s")
+    logging_utils.logger.info(f"PH Election Results 2025 Scraper: Ended in {trunc(elapsed_time//(60*60))}h {trunc((elapsed_time//60) % 60)}m {trunc(elapsed_time % 60)}s")
