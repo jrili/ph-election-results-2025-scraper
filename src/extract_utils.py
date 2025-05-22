@@ -42,7 +42,7 @@ def get_json(url):
         sleep(config.REQUEST_SLEEP_S)
         return None
 
-def get_region_er_json(top_level, src_category_code, code=0):
+def get_region_er_json(top_level, src_category_code, code="0"):
     """ Get the JSON data for regional data (category codes 0 to 5) or election results data (category code null/None)
 
     Keyword Arugments:
@@ -127,3 +127,70 @@ def get_output_path(parents:list, filename=None):
         output_path = os.path.join(output_path, filename)
 
     return output_path
+
+def extract_region_er_json(top_level:str, parents:list, code="0",
+                        src_category_code=0,
+                        return_existing_file_enabled=True):
+    """Extracts region json or election result json data either from previously downloaded file (if existing) or fetched from URL
+
+    Keyword Arguments:
+    top_level -- string; `local` or `overseas`
+
+    parents --  list of strings that correspond to region codes of each succeeding parent, e.g. ['local', 'R04A000', '3400000', '3403000', '3403008']
+
+    code -- string; code to be extracted
+
+    src_category_code -- category code from which code was taken from
+
+    return_existing_file_enabled -- enable reading from previously downloaded (already existing) file
+
+    
+    Return:
+
+    dict parsed from JSON extracted from URL or previously downloaded file
+
+    None if extracting from URL failed
+
+    None if previously downloaded file exists and return_existing_file_enabled is set to False
+
+
+    """
+    logging_utils.logger.debug(f"In extract_region_er_json(): top_level:{top_level}, parents:{parents}, code:{code}, return:{return_existing_file_enabled}")
+
+    path_to_output_file = get_output_path(parents, f"{code}.json")
+
+    extracted_json = {}
+
+    # Skip getting and saving if existing (presumed previously downloaded)
+    if not os.path.exists(path_to_output_file):
+
+        extracted_json = get_region_er_json(top_level,
+                                            src_category_code=src_category_code,
+                                            code=code)
+
+        if extracted_json == None:
+            log_str = f"Unable to get JSON data w/ code '{code}' from "
+            for parent in parents:
+                log_str = log_str + f" {parent}|"
+            log_str = log_str[:-1] + ". Skipping."
+
+            logging_utils.logger.warning(log_str)
+
+        # Write the region/election results json file
+        else:
+            write_json(extracted_json, path_to_output_file)
+    else:
+        if return_existing_file_enabled:
+            with open(path_to_output_file, 'r') as f:
+                extracted_json = json.load(f)
+        else:
+            logging_utils.logger.info(f"\tFile already downloaded in '{path_to_output_file}'. Skipping.")
+            extracted_json = None
+
+    logging_utils.logger.debug(f"In extract_region_er_json(): End")
+    return extracted_json
+
+def extract_top_level_json(top_level):
+    """ Extracts top-level JSON data specified by `top_level`"""
+    extracted_json = extract_region_er_json(top_level=top_level, parents=[])
+    return extracted_json
