@@ -128,8 +128,9 @@ def get_output_path(parents:list, filename=None):
 
     return output_path
 
-def extract_region_er_json(top_level:str, parents:list, code="0",
-                        src_category_code=0,
+def extract_region_er_json(top_level:str, parents:list,
+                        src_category_code,
+                        code="0",
                         return_existing_file_enabled=True):
     """Extracts region json or election result json data either from previously downloaded file (if existing) or fetched from URL
 
@@ -192,5 +193,5 @@ def extract_region_er_json(top_level:str, parents:list, code="0",
 
 def extract_top_level_json(top_level):
     """ Extracts top-level JSON data specified by `top_level`"""
-    extracted_json = extract_region_er_json(top_level=top_level, parents=[])
+    extracted_json = extract_region_er_json(top_level=top_level, parents=[], src_category_code="0")
     return extracted_json

@@ -97,6 +97,7 @@ if __name__ == "__main__":
                                                     ],
                                                     code=precinct_json['code'],
                                                     top_level = top_level,
+                                                    src_category_code=None,
                                                     return_existing_file_enabled=False)
 
     elapsed_time = time() - start_time
